@@ -1,0 +1,9 @@
+composer create-project laravel/laravel:^10.0 apispeler
+
+composer self-update
+
+composer require laravel/ui
+
+composer require barryvdh/laravel-dompdf
+
+php artisan:makeMiddleware RoleMiddleware
