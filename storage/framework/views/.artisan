@@ -7,3 +7,5 @@ composer require laravel/ui
 composer require barryvdh/laravel-dompdf
 
 php artisan:makeMiddleware RoleMiddleware
+
+Remove-Item (Get-PSReadlineOption).HistorySavePath
