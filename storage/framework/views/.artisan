@@ -9,3 +9,180 @@ composer require barryvdh/laravel-dompdf
 php artisan:makeMiddleware RoleMiddleware
 
 Remove-Item (Get-PSReadlineOption).HistorySavePath
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0047AB, #000000);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background-color: #fff;
+      padding: 32px 24px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+    }
+
+    .login-header {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .login-header h1 {
+      font-size: 22px;
+      color: #222;
+      font-weight: 600;
+    }
+
+    .login-header p {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      border: 1.5px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.2s;
+    }
+
+    .input-group input:focus {
+      outline: none;
+      border-color: #0047AB;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 14px;
+      color: #999;
+    }
+
+    .input-field {
+      position: relative;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #0047AB;
+      color: white;
+      font-weight: 600;
+      font-size: 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #003B95;
+    }
+
+    .error-message {
+      color: #e53935;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .register-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+      color: #444;
+    }
+
+    .register-link a {
+      color: #0047AB;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>Selamat Datang</h1>
+      <p>Silakan masuk untuk melanjutkan</p>
+    </div>
+
+    <form action="{{ route('login') }}" method="POST">
+      @csrf
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Masukkan email Anda" value="{{ old('email') }}" required>
+        @error('email')
+          <span class="error-message">{{ $message }}</span>
+        @enderror
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <div class="input-field">
+          <input type="password" id="password" name="password" placeholder="Masukkan password Anda" required>
+          <span class="toggle-password" onclick="togglePassword()">👁️</span>
+          @error('password')
+            <span class="error-message">{{ $message }}</span>
+          @enderror
+        </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Masuk</button>
+    </form>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const input = document.getElementById('password');
+      const icon = document.querySelector('.toggle-password');
+      if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "🙈";
+      } else {
+        input.type = "password";
+        icon.textContent = "👁️";
+      }
+    }
+  </script>
+</body>
+</html>
