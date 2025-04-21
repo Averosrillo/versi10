@@ -201,21 +201,27 @@ class WalletController extends Controller
         return redirect()->back()->with('success', 'Withdraw berhasil dilakukan dari siswa.');
     }
 
-    public function exportMyPDF()
-    {
-        if (Auth::user()->role !== 'siswa') {
-            abort(403, 'Akses ditolak. Hanya siswa yang bisa mendownload ini.');
-        }
-
-        $user = Auth::user();
-        $mutasi = Wallet::with('user')
-            ->where('user_id', $user->id)
-            ->latest()
-            ->get();
-
-        $pdf = Pdf::loadView('riwayat-transaksi-pdf', compact('mutasi'));
-        return $pdf->download('riwayat_transaksi_' . $user->name . '.pdf');
+    public function exportMyPDF($id)
+{
+    if (Auth::user()->role !== 'siswa' && Auth::user()->role !== 'admin') {
+        abort(403, 'Akses ditolak. Hanya siswa atau admin yang bisa mendownload ini.');
     }
+
+    $user = User::findOrFail($id);
+
+    if (Auth::user()->role === 'siswa' && Auth::user()->id !== $user->id) {
+        abort(403, 'Akses ditolak. Anda tidak dapat mengunduh riwayat siswa lain.');
+    }
+
+    $mutasi = Wallet::with('user')
+        ->where('user_id', $user->id)
+        ->latest()
+        ->get();
+
+    $pdf = Pdf::loadView('riwayat-transaksi-pdf', compact('mutasi'));
+    return $pdf->download('riwayat_transaksi_' . $user->name . '.pdf');
+}
+
 
     public function exportPDF()
     {
