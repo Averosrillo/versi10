@@ -7,6 +7,8 @@
     <title>Financial Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <style>
         :root {
             --primary: #3b82f6; /* Soft Blue */
@@ -457,12 +459,12 @@
                     </li>
                 @endif
                 @if (Auth::user()->role === 'siswa')
-                    <li class="nav-item mt-2">
-                        <a href="{{ route('export.pdf.student') }}" class="btn btn-success w-100 text-start">
-                            <i class="fas fa-file-pdf"></i> Unduh Riwayat
-                        </a>
-                    </li>
-                @endif
+                <li class="nav-item mt-2">
+                    <a href="{{ route('export.pdf.student', ['id' => Auth::user()->id]) }}" class="btn btn-success w-100 text-start">
+                        <i class="fas fa-file-pdf"></i> Unduh Riwayat
+                    </a>
+                </li>
+            @endif
             </ul>
 
             <form action="{{ route('logout') }}" method="POST">
@@ -571,18 +573,24 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="user-actions">
-                                                <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
+                                            <div class="action-buttons">
+                                                @if($user->role === 'siswa')
+                                                    <a href="{{ route('export.pdf.student', $user->id) }}" class="btn btn-sm btn-info">
+                                                        <i class="fas fa-file-pdf"></i> Unduh PDF
+                                                    </a>
+                                                @endif
+                                                <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editUserModal{{ $user->id }}">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
-                                                <form action="{{ route('delete-user', $user->id) }}" method="POST" style="display:inline;">
+                                                <form action="{{ route('delete-user', $user->id) }}" method="POST" class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
                                             </div>
+                                            
                                         </div>
                                     @endforeach
                                 @endif
@@ -596,7 +604,7 @@
                 <h2 class="page-title">Dashboard Siswa</h2>
 
                 <div class="row">
-                    <div class="col-lg-6 col-md-12">
+                    <div class="col-lg-12 col-md-12">
                         <div class="balance-card">
                             <h4 class="balance-title">Saldo Kamu</h4>
                             <div class="balance-amount">Rp {{ number_format($saldo, 0, ',', '.') }}</div>
@@ -604,7 +612,7 @@
                     </div>
                     <div class="col-lg-6 col-md-12">
                         <div class="row">
-                            <div class="col-md-6">
+                            {{-- <div class="col-md-6">
                                 <div class="stats-card">
                                     <div class="stats-icon">
                                         <i class="fas fa-arrow-up"></i>
@@ -625,7 +633,7 @@
                                         <div class="stats-value">Rp {{ number_format($mutasi->sum('credit'), 0, ',', '.') }}</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
