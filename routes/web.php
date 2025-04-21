@@ -45,6 +45,7 @@ Route::get('/all-transaction', [WalletController::class, 'all'])->name('wallet.a
 Route::post('/bank/topup', [WalletController::class, 'bankTopupToSiswa'])->name('bank.topup');
 Route::post('/bank/withdraw', [WalletController::class, 'bankWithdrawFromSiswa'])->name('bank.withdraw');
 Route::get('/wallet/export-pdf', [WalletController::class, 'exportPDF'])->name('export.pdf');
-Route::get('/wallet/export-my-pdf', [WalletController::class, 'exportMyPDF'])->name('export.pdf.student');
+Route::get('/wallet/export-my-pdf/{id}', [WalletController::class, 'exportMyPDF'])->name('export.pdf.student');
+
 
 
